@@ -1,0 +1,29 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.cluster import DBSCAN
+from sklearn.preprocessing import StandardScaler
+
+# Load your dataset (assuming it's in a variable called 'data')
+# data = pd.read_csv('your_dataset.csv')
+
+# Extracting the features for clustering (Age, Annual Income, and Spending Score)
+X = data.iloc[:, 2:].values
+
+# Standardize the features (important for DBSCAN)
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Apply DBSCAN clustering
+# eps is the maximum distance between two samples for one to be considered as in the neighborhood of the other
+# min_samples is the number of samples (or total weight) in a neighborhood for a point to be considered as a core point
+dbscan = DBSCAN(eps=0.3, min_samples=5)
+clusters = dbscan.fit_predict(X_scaled)
+
+# Visualize the clusters
+plt.figure(figsize=(8, 6))
+plt.scatter(X[:, 0], X[:, 1], c=clusters, cmap='rainbow', s=50)
+plt.title('DBSCAN Clustering')
+plt.xlabel('Annual Income')
+plt.ylabel('Spending Score')
+plt.show()
